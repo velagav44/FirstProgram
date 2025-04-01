@@ -1,7 +1,13 @@
 pipeline {
     agent any  // Use any available agent, or specify one if needed
     
+    environment {
+        AWS_REGION = "us-east-1"
+        AWS_TOPIC = "test/topic"
+    }
+
      stages {
+        
         stage('Connect to AWS') {
             steps {
                 // Use AWS credentials in this block
@@ -10,13 +16,18 @@ pipeline {
                     }
                 }
             }
-        stage('Run Python Script')
-        {
+            stage('Publish to AWS IoT') {
             steps {
                 script {
-                    sh 'python3 publish_message.py'  
+                    def message = "Hello from Jenkins"
+                    def encodedMessage = sh(script: "echo '${message}' | base64", returnStdout: true).trim()
+
+                    sh """
+                        aws iot-data publish --topic "$AWS_TOPIC" --payload "$(echo '$encodedMessage' | base64 --decode)" --region "$AWS_REGION"
+                    """
                 }
             }
         }
+      
     }
 }
