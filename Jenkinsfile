@@ -10,5 +10,13 @@ pipeline {
                     }
                 }
             }
+        stage('Run Python Script')
+        {
+            steps {
+                script {
+                    sh 'python3 publish_message.py'  
+                }
+            }
+        }
     }
 }
