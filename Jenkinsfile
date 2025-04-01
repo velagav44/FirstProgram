@@ -21,10 +21,11 @@ pipeline {
                 script {
                   
                    def encodedMessage = sh(script: "echo 'Hello from Jenkins' | base64", returnStdout: true).trim()
-
+                 
+                   withAWS(credentials: 'aws-credentials', region: 'us-east-1'){
                    // sh 'aws iot-data publish --topic "\$AWS_TOPIC" --payload "$(echo '${encodedMessage}' | base64 --decode)" --region "\$AWS_REGION"'
                     sh 'aws iot-data publish --topic "$AWS_TOPIC" --payload "${encodedMessage}" --region "$AWS_REGION"'
-                    
+                   }
                 }
             }
         }
