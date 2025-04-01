@@ -1,5 +1,5 @@
 pipeline {
-    agent any  // Use any available agent, or specify one if needed
+    agent any  
     
     environment {
         AWS_REGION = "us-east-1"
@@ -19,9 +19,12 @@ pipeline {
             stage('Publish to AWS IoT') {
             steps {
                 script {
+                  
                    def encodedMessage = sh(script: "echo 'Hello from Jenkins' | base64", returnStdout: true).trim()
 
-                    sh 'aws iot-data publish --topic "\$AWS_TOPIC" --payload "$(echo '${encodedMessage}' | base64 --decode)" --region "\$AWS_REGION"'
+                   // sh 'aws iot-data publish --topic "\$AWS_TOPIC" --payload "$(echo '${encodedMessage}' | base64 --decode)" --region "\$AWS_REGION"'
+                    sh 'aws iot-data publish --topic "$AWS_TOPIC" --payload "$(echo \'${encodedMessage}\' | base64 --decode)" --region "$AWS_REGION"'
+
                     
                 }
             }
