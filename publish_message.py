@@ -7,7 +7,7 @@ iot_data = boto3.client("iot-data", region_name="us-east-1")
 # Define the message
 message = {
     "status": "online",
-    "device": "Vijay computer-45"
+    "device": "Test Message from Vijay"
 }
 
 # Convert message to JSON (without Base64 encoding)
