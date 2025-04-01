@@ -19,8 +19,7 @@ pipeline {
             stage('Publish to AWS IoT') {
             steps {
                 script {
-                    def message = "Hello from Jenkins"
-                    def encodedMessage = sh(script: "echo '${message}' | base64", returnStdout: true).trim()
+                   def encodedMessage = sh(script: "echo 'Hello from Jenkins' | base64", returnStdout: true).trim()
 
                     sh """
                         aws iot-data publish --topic "\$AWS_TOPIC" --payload "$(echo '${encodedMessage}' | base64 --decode)" --region "\$AWS_REGION"
