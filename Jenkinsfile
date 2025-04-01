@@ -23,7 +23,7 @@ pipeline {
                     def encodedMessage = sh(script: "echo '${message}' | base64", returnStdout: true).trim()
 
                     sh """
-                        aws iot-data publish --topic "$AWS_TOPIC" --payload "$(echo '$encodedMessage' | base64 --decode)" --region "$AWS_REGION"
+                        aws iot-data publish --topic "\$AWS_TOPIC" --payload "$(echo '${encodedMessage}' | base64 --decode)" --region "\$AWS_REGION"
                     """
                 }
             }
